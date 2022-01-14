@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en-US"><head>
+		<title>Roblox Asset Downloader</title>
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="icon" href="images/logo-small.png">
+		<meta name="description"
+			content="Easily download and view Roblox clothing.">
+      	<meta name="robots" content="index, follow">
+		<link rel="canonical" href="https://www.dmbkdevelopment.com/asset-downloader">
+		<meta property="og:locale" content="en_US">
+		<meta property="og:type" content="website">
+		<meta property="og:title" content="Roblox Asset Downloader - dmbk development">
+		<meta property="og:description"
+			content="Easily download and view Roblox clothing.">
+		<meta property="og:url" content="https://www.dmbkdevelopment.com/asset-downloader/images/embed.png">
+		<meta property="og:site_name" content="Roblox Asset Downloader">
+		<meta property="og:image" content="https://www.dmbkdevelopment.com/asset-downloader/images/embed.png">
+		<meta property="og:image:secure_url" content="https://www.dmbkdevelopment.com/asset-downloader/images/embed.png">
+		<meta property="og:image:width" content="560">
+		<meta property="og:image:height" content="340">
+		<meta name="twitter:card" content="summary_large_image">
+		<meta name="twitter:description"
+			content="Easily download and view Roblox clothing.">
+		<meta name="twitter:title" content="Roblox Asset Downloader - dmbk development">
+		<meta name="twitter:image" content="https://www.dmbkdevelopment.com/asset-downloader/images/embed.png">
+	</head>
+	
+	<body style="background-image: url(images/background.png); background-repeat: repeat-y; background-size: cover;">
+		<img src="images/logo.png" style="margin: 0px 25% 0px 25%; width: 50%; height: 50%;">
+		<p style="text-align: center;">
+			<img style="background-color: white; width: 585px; height: 559px; border: 5px solid #fff; border-radius: 25px;" id="outputImage" src="images/shirt-template.png">
+		</p><br>
+		
+		<input style="width:90%; padding:14px 22px; margin:0px 5% 5px 5%; border: 2px solid #000; border-radius: 5px; box-sizing: border-box; text-align:center" autocomplete="off" type="text" id="clothingID" name="url" placeholder="Enter Clothing ID or Catalog URL (eg. 6607924538 or https://www.roblox.com/catalog/6607924538)">
+		<button onclick="clickFunction()" style="background-color: white; width: 90%; padding:14px 22px; margin:5px 5%; border: 2px solid #000; border-radius: 5px; box-sizing: border-box; text-align:center" id="submitAsset">Load Clothing Asset</button>
+		
+		<p style="text-align: center;"><a href="https://github.com/uDMBK/RobloxAssetDownloader">
+			<img style="width: 48px; height: 48px; background-color: black; border: 12px solid #000; border-radius:24px;" src="images/github.png">
+		</a></p>
+		
+		<script>
+			var xmlHttp = null;
+			var xmlHttpB = null;
+			var xmlHttpC = null;
+			
+			function clickFunction() {
+				var Url = "https://assetdelivery.roblox.com/v1/asset/?id=" + document.getElementById('clothingID').value.replace(/\D/g,'');
+				xmlHttp = new XMLHttpRequest(); 
+				xmlHttp.onreadystatechange = ProcessRequestA;
+				xmlHttp.open( "GET", Url, true );
+				xmlHttp.setRequestHeader('Content-type','text/plain');
+				xmlHttp.setRequestHeader('Accept', '*/*');
+				xmlHttp.send( null ); }
+			
+			function ProcessRequestA() {
+				if ( xmlHttp.readyState == 4 && xmlHttp.status == 200 ) 
+					{ console.log(xmlHttp.responseText);
+					var regExString = new RegExp("(?:id=)((.[\\s\\S]*))(?:<\/u)", "ig"); //set ig flag for global search and case insensitive
+
+					var temp = xmlHttp.responseText.match(new RegExp('id=' + "(.*)" + '</u'));
+
+					var assetUrl = 'https://assetdelivery.roblox.com/v1/assetid/' + temp[1];
+					if (assetUrl && assetUrl.length > 1) {
+						xmlHttpB = new XMLHttpRequest(); 
+						xmlHttpB.onreadystatechange = ProcessRequestB;
+						xmlHttpB.open( "GET", assetUrl, true );
+						xmlHttpB.setRequestHeader('Content-type','text/plain');
+						xmlHttpB.setRequestHeader('Accept', '*/*');
+						xmlHttpB.send( null ); }}
+				else { console.log("uh"); }}
+				
+			function ProcessRequestB() {
+				if ( xmlHttpB.readyState == 4 && xmlHttpB.status == 200 ) {
+					console.log(xmlHttpB.responseText);
+					var regExString2 = new RegExp("(?:{\"location\":\")((.[\\s\\S]*))(?:\",\"req)", "ig")
+					
+					var imageUrl = regExString2.exec(xmlHttpB.responseText)[1];
+					if (imageUrl && imageUrl.length > 1) {
+						document.getElementById("outputImage").src = imageUrl; }}}
+		</script>
+	</body>
+</html>
