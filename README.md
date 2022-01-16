@@ -7,4 +7,4 @@ This tool is depreciated due to [Roblox AssetDelivery API not properly utilising
 <hr>
 
 It is highly recommended you use the updated C# WinForm above and not the web version as it will not work on modern web browsers (eg. Firefox, Chrome, Safari) due to modern security policies.
-[Take me to the depreciated web version anyway!](https://github.com/uDMBK/RobloxAssetDownloader)
+[Take me to the depreciated web version anyway!](https://dmbkdevelopment.com/RobloxAssetDownloader)
